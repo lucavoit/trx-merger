@@ -53,6 +53,9 @@ namespace TRX_Merger.Utilities
                                          new XAttribute("id", td.Id),
                                          new XAttribute("name", td.Name),
                                          new XAttribute("storage", td.Storage),
+                                         new XElement("Owners",
+                                            new XElement("Owner",
+                                                new XAttribute("name", td?.Owner?.Name ?? ""))),
                                          new XElement("Execution",
                                             new XAttribute("id", td.Execution.Id)),
                                          new XElement("TestMethod",
@@ -252,14 +255,16 @@ namespace TRX_Merger.Utilities
                 var name = def.GetAttributeValue("name");
                 var storage = def.GetAttributeValue("storage");
                 var id = def.GetAttributeValue("id");
+                var Owner = DeserializeOwner(def);
                 var Execution = DeserializeExecution(def);
-                var TestMethod = DeserializeTestMethod(def);
+				var TestMethod = DeserializeTestMethod(def);
 
                 result.Add(new UnitTest
                 {
                     Id = id,
                     Name = name,
                     Storage = storage,
+                    Owner = Owner,
                     Execution = Execution,
                     TestMethod = TestMethod
                 });
@@ -268,8 +273,18 @@ namespace TRX_Merger.Utilities
 
             return result;
         }
-
-        private static Execution DeserializeExecution(XElement unitTest)
+		private static Owner DeserializeOwner(XElement unitTest)
+		{
+			var owners = unitTest.Descendants(ns + "Owners").FirstOrDefault();
+			if (owners == null)
+				return null;
+            var owner = owners.Descendants(ns + "Owner").FirstOrDefault();
+			return new Owner
+			{
+				Name = owner.GetAttributeValue("name"),
+			};
+		}
+		private static Execution DeserializeExecution(XElement unitTest)
         {
             var exec = unitTest.Descendants(ns + "Execution").FirstOrDefault();
             if (exec == null)

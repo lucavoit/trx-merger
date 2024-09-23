@@ -190,3 +190,4 @@ _Pvt_Extensions/
 ModelManifest.xml
 packages/*
 Web/Content/bower_components/*
+.vs/*

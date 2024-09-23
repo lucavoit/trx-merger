@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TRX_Merger": {
+      "commandName": "Project",
+      "commandLineArgs": "/trx:ui-results.xml,api-results.xml /output:test-results.xml"
+    }
+  }
+}

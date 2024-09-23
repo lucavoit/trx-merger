@@ -172,7 +172,7 @@ PARAMETERS:
             var splitOutput = outputParam.Split(new char[] { ':' });
 
             if (splitOutput.Length == 1
-                || !outputParam.EndsWith(".trx"))
+                || !(outputParam.EndsWith(".trx") || outputParam.EndsWith(".xml")))
                 return "Error: /output parameter is in the incorrect format. Expected /output:<file name | directory and file name>. Execute /help for more information";
 
             return outputParam.Substring(8, outputParam.Length - 8);
@@ -239,7 +239,7 @@ PARAMETERS:
 
             foreach (var a in args)
             {
-                bool isTrxFile = File.Exists(a) && a.EndsWith(".trx");
+                bool isTrxFile = File.Exists(a) && (a.EndsWith(".trx") || a.EndsWith(".xml"));
                 bool isDir = Directory.Exists(a);
 
                 if (!isTrxFile && !isDir)
